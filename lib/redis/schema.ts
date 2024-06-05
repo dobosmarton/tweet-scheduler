@@ -1,15 +1,15 @@
 import { z } from "zod";
 
-// Key: "tweet:{tweetId}"
+// Key: "tweet:{userId}"
 export const tweetSchema = z.object({
   keywords: z.array(z.string()),
 });
 
-// Key: "tweet-history:{tweetId}"
+// Key: "tweet-history:{userId}"
 export const tweetHistorySchema = z
   .array(
     z.object({
-      tweetId: z.string(),
+      userId: z.string(),
       text: z.string(),
       createdAt: z.string(),
     })

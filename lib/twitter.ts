@@ -98,8 +98,35 @@ export const logout = async () => {
   redirect("/");
 };
 
-export const createTweet = async (token: OAuth2UserOptions["token"], text: string) => {
+/**
+ * Retrieves the current user's ID from Twitter API using the provided token.
+ * @param token - The OAuth2 token for authentication.
+ * @returns The current user's ID.
+ * @throws If there are errors returned from the API or if the user ID is not found.
+ */
+export const getCurrentUserId = async (token: OAuth2UserOptions["token"]) => {
   const { client } = getTwitterClients(token);
 
+  const res = await client.users.findMyUser();
+
+  if (res.errors) {
+    throw new Error(res.errors.map((error) => error.detail).join(", "));
+  }
+
+  if (!res.data?.id) {
+    throw new Error("User ID not found");
+  }
+
+  return res.data.id;
+};
+
+/**
+ * Creates a new tweet using the provided token and text.
+ * @param token - The OAuth2 user token.
+ * @param text - The content of the tweet.
+ * @returns A Promise that resolves to the created tweet.
+ */
+export const createTweet = async (token: OAuth2UserOptions["token"], text: string) => {
+  const { client } = getTwitterClients(token);
   return client.tweets.createTweet({ text });
 };
