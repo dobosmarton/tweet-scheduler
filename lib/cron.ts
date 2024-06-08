@@ -27,7 +27,7 @@ export const scheduleSchema = z
     if (value.frequency === "daily") {
       return `${value.time.minute} ${value.time.hour} * * *`;
     }
-    return `${value.time.minute} ${value.time.hour} * * ${value.weekday - 1}`;
+    return `${value.time.minute} ${value.time.hour} * * ${value.weekday + 1}`;
   });
 
 export type ScheduleInput = z.input<typeof scheduleSchema>;
